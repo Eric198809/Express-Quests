@@ -11,7 +11,9 @@ app.get("/api/movies/:id", movieControllers.getMovieById);
 
 /////Users///////
 
-app.get("/api/users", movieControllers.getUsers);
-app.get("/api/users/:id", movieControllers.getUserById);
+const userControllers = require("./controllers/userControllers");
+
+app.get("/api/users", userControllers.getUsers);
+app.get("/api/users/:id", userControllers.getUserById);
 
 module.exports = app;
