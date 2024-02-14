@@ -2,14 +2,12 @@ const request = require("supertest");
 const app = require("../src/app");
 const crypto = require("node:crypto");
 
-///Test GET//
+// ///Test GET//
 
 describe("GET /api/users", () => {
   it("should return all users", async () => {
     const response = await request(app).get("/api/users");
-
     expect(response.headers["content-type"]).toMatch(/json/);
-
     expect(response.status).toEqual(200);
   });
 });
@@ -17,14 +15,12 @@ describe("GET /api/users", () => {
 describe("GET /api/users/:id", () => {
   it("should return one user", async () => {
     const response = await request(app).get("/api/users/1");
-
     expect(response.headers["content-type"]).toMatch(/json/);
     expect(response.status).toEqual(200);
   });
 
   it("should return no user", async () => {
     const response = await request(app).get("/api/users/0");
-
     expect(response.status).toEqual(404);
   });
 });
@@ -42,7 +38,6 @@ describe("POST /api/users", () => {
     };
 
     const response = await request(app).post("/api/users").send(newUser);
-
     expect(response.status).toEqual(201);
     expect(response.body).toHaveProperty("id");
     expect(typeof response.body.id).toBe("number");
@@ -54,7 +49,6 @@ describe("POST /api/users", () => {
     );
 
     const [userInDatabase] = result;
-
     expect(userInDatabase).toHaveProperty("id");
     expect(userInDatabase).toHaveProperty("firstname");
     expect(userInDatabase.firstname).toStrictEqual(newUser.firstname);
@@ -65,7 +59,6 @@ describe("POST /api/users", () => {
     const response = await request(app)
       .post("/api/users")
       .send(userWithMissingProps);
-
     expect(response.status).toEqual(500);
   });
 });
@@ -105,7 +98,6 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/${id}`)
       .send(updatedUser);
-
     expect(response.status).toEqual(204);
 
     const [users] = await database.query("SELECT * FROM users WHERE id=?", id);
@@ -135,7 +127,6 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/1`)
       .send(userWithMissingProps);
-
     expect(response.status).toEqual(500);
   });
 
@@ -149,7 +140,21 @@ describe("PUT /api/users/:id", () => {
     };
 
     const response = await request(app).put("/api/user/0").send(newUser);
+    expect(response.status).toEqual(404);
+  });
+});
 
+///Test Delete//
+
+describe("DELETE /api/users/:id", () => {
+  it("should delete one user", async () => {
+    const response = await request(app).get("/api/users/1");
+    expect(response.headers["content-type"]).toMatch(/json/);
+    expect(response.status).toEqual(200);
+  });
+
+  it("should no delete user", async () => {
+    const response = await request(app).get("/api/users/50");
     expect(response.status).toEqual(404);
   });
 });
