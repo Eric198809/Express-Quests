@@ -1,6 +1,6 @@
 const database = require("../../database");
 
-/////Movies///////
+/////GET Movies///////
 const getMovies = (req, res) => {
   database
     .query("select * from movies")
@@ -13,7 +13,7 @@ const getMovies = (req, res) => {
     });
 };
 
-/////Movies id///////
+/////GET Movie id///////
 const getMovieById = (req, res) => {
   const id = parseInt(req.params.id);
 

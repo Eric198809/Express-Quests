@@ -76,10 +76,10 @@ const updateUser = (req, res) => {
 
 /////Delete user///////
 const deleteUser = (req, res) => {
-  const id = parseInt(req.param.id);
+  const id = parseInt(req.params.id);
 
   database
-    .query("delete from users where id = ?", [id])
+    .query("delete from movies where id = ?", [id])
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -89,9 +89,10 @@ const deleteUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500);
+      res.sendStatus(500);
     });
 };
+
 
 module.exports = {
   getUsers,
